@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-// Build a pattern to match the first and last digit in humanoid or digit.
+﻿// Build a pattern to match the first and last digit in humanoid or digit.
 // Read the input text file,
 // Find the first and last phrase on each line,
 // map to index as literal character,
@@ -39,4 +37,5 @@ var values =
 
 var sum = values.Aggregate((a, b) => a + b);
 
-Console.WriteLine(sum);
+Debug.Assert(54078 == sum);
+Console.WriteLine(sum); 

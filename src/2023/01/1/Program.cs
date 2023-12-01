@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-// Read the input text file,
+﻿// Read the input text file,
 // concat the first and last digit on each line
 // parse number 
 // then aggregate its sum.
@@ -19,4 +17,5 @@ var values =
 
 var sum = values.Aggregate((a, b) => a + b);
 
+Debug.Assert(54601 == sum);
 Console.WriteLine(sum);

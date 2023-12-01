@@ -6,4 +6,9 @@
         <WarningsAsErrors>Nullable</WarningsAsErrors>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="System.Diagnostics"/>
+        <Using Include="System.Text.RegularExpressions"/>
+    </ItemGroup>
 </Project>
