@@ -19,17 +19,17 @@ var map =
 
 var pattern = "(" + string.Join('|', map) + ")";
 
-var (first, last) = (
+var regexes = new[]
+{
     new Regex(pattern, commonOptions),
-    new Regex(pattern, RegexOptions.RightToLeft | commonOptions));
+    new Regex(pattern, RegexOptions.RightToLeft | commonOptions)
+};
 
 var values =
     from line in File.ReadAllLines(@"../input.txt")
-    let phrases = new[]
-    {
-        first.Match(line).Value, 
-        last.Match(line).Value
-    }
+    let phrases =
+        from regex in regexes
+        select regex.Match(line).Value
     let digits =
         from phrase in phrases
         select (char)('0' + Array.IndexOf(map, phrase) % 10)
@@ -38,4 +38,4 @@ var values =
 var sum = values.Aggregate((a, b) => a + b);
 
 Debug.Assert(54078 == sum);
-Console.WriteLine(sum); 
+Console.WriteLine(sum);
