@@ -1,30 +1,36 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 
 /// Build a pattern to match the first and last digit in humanoid or digit.
 /// Read the input text file,
 /// Find the first and last phrase on each line,
 /// map to index as literal character,
-/// concat the two characters
-/// parse number 
+/// concat the two digits and parse number 
 /// and aggegate its sum.
 
-string[] unitsMap = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
-string[] digitsMap = Enumerable.Range(0, 10).Select(x => x.ToString()).ToArray();
-string pattern = string.Join("|", unitsMap.Concat(digitsMap));
+const RegexOptions commonOptions = RegexOptions.Compiled | RegexOptions.ExplicitCapture;
 
-var sum = File.ReadAllLines(@"../input.txt")
-        .Select(line => new[]
-        {
-            Regex.Match(line, pattern).Value,
-            Regex.Match(line, pattern, RegexOptions.RightToLeft).Value
-        })
-        .Select(line => line.Select(
-            phrase => (char)('0' + (Array.IndexOf(unitsMap, phrase) == -1
-                ? Array.IndexOf(digitsMap, phrase)
-                : Array.IndexOf(unitsMap, phrase)))
-        ))
-        .Select(x => new string(x.ToArray()))
-        .Select(int.Parse)
-        .Aggregate((a,b) => a + b);
+string[] map = 
+    Enumerable.Range(0, 10)
+              .Select(i => i.ToString())
+              .Concat(new[] { "zero", "one", "two", "three", "four", "five", 
+                               "six", "seven", "eight", "nine"})
+              .ToArray();
+
+string pattern = "(" + string.Join('|', map) + ")";
+
+var (first, last) = (
+    new Regex(pattern, commonOptions), 
+    new Regex(pattern, RegexOptions.RightToLeft | commonOptions));
+
+var values =
+    from line in File.ReadAllLines(@"../input.txt")
+    let phrases = new[] { first.Match(line).Value, last.Match(line).Value }
+    let digits = 
+        from phrase in phrases
+        select (char)('0' + (Array.IndexOf(map, phrase) % 10))
+    select int.Parse(new string(digits.ToArray()));
+    
+var sum = values.Aggregate((a, b) => a + b);      
 
 Console.WriteLine(sum);
