@@ -27,7 +27,11 @@ var (first, last) = (
 
 var values =
     from line in File.ReadAllLines(@"../input.txt")
-    let phrases = new[] { first.Match(line).Value, last.Match(line).Value }
+    let phrases = new[]
+    {
+        first.Match(line).Value, 
+        last.Match(line).Value
+    }
     let digits =
         from phrase in phrases
         select (char)('0' + Array.IndexOf(map, phrase) % 10)
