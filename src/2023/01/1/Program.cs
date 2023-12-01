@@ -9,14 +9,14 @@ const string pattern = @"(\d)";
 const RegexOptions commonOptions = RegexOptions.Compiled | RegexOptions.ExplicitCapture;
 
 var (first, last) = (
-    new Regex(pattern, commonOptions), 
+    new Regex(pattern, commonOptions),
     new Regex(pattern, RegexOptions.RightToLeft | commonOptions));
 
-var values = 
+var values =
     from line in File.ReadAllLines(@"../input.txt")
     let digits = first.Match(line).Value + last.Match(line).Value
     select int.Parse(digits);
 
-var sum = values.Aggregate((a, b) => a + b);      
+var sum = values.Aggregate((a, b) => a + b);
 
 Console.WriteLine(sum);
