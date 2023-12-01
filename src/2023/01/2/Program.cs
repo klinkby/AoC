@@ -1,10 +1,12 @@
 ﻿using System.Text.RegularExpressions;
 
+/// Build a pattern to match the first and last digit in humanoid or digit.
 /// Read the input text file,
-/// concat the first and last digit on each line
+/// Find the first and last phrase on each line,
+/// map to index as literal character,
+/// concat the two characters
 /// parse number 
 /// and aggegate its sum.
-
 
 string[] unitsMap = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
 string[] digitsMap = Enumerable.Range(0, 10).Select(x => x.ToString()).ToArray();
