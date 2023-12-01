@@ -1,9 +1,9 @@
 ﻿using System.Text.RegularExpressions;
 
-/// Read the input text file,
-/// concat the first and last digit on each line
-/// parse number 
-/// then aggegate its sum.
+// Read the input text file,
+// concat the first and last digit on each line
+// parse number 
+// then aggregate its sum.
 
 const string pattern = @"(\d)";
 const RegexOptions commonOptions = RegexOptions.Compiled | RegexOptions.ExplicitCapture;

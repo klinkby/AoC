@@ -1,12 +1,11 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
-/// Build a pattern to match the first and last digit in humanoid or digit.
-/// Read the input text file,
-/// Find the first and last phrase on each line,
-/// map to index as literal character,
-/// concat the two digits and parse number 
-/// and aggegate its sum.
+// Build a pattern to match the first and last digit in humanoid or digit.
+// Read the input text file,
+// Find the first and last phrase on each line,
+// map to index as literal character,
+// concat the two digits and parse number 
+// and aggregate its sum.
 
 const RegexOptions commonOptions = RegexOptions.Compiled | RegexOptions.ExplicitCapture;
 
