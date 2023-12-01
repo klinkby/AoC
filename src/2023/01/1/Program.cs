@@ -1,6 +1,6 @@
 ﻿// Read the input text file,
-// concat the first and last digit on each line
-// parse number 
+// find the first and last digit on each line
+// concatenate and parse number 
 // then aggregate its sum.
 
 const string pattern = @"(\d)";
@@ -14,10 +14,10 @@ var regexes = new[]
 
 var values =
     from line in File.ReadAllLines(@"../input.txt")
-    let phrases =
+    let digits =
         from regex in regexes
         select regex.Match(line).Value
-    select int.Parse(string.Concat(phrases));
+    select int.Parse(string.Concat(digits));
 
 var sum = values.Aggregate((a, b) => a + b);
 
