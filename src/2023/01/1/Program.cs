@@ -3,11 +3,20 @@
 /// Read the input text file,
 /// concat the first and last digit on each line
 /// parse number 
-/// and aggegate its sum.
+/// then aggegate its sum.
 
-var sum = File.ReadAllLines(@"../input.txt")
-              .Select(line => string.Empty + Regex.Match(line, @"\d").Value + Regex.Match(line, @"\d", RegexOptions.RightToLeft).Value)
-              .Select(int.Parse)
-              .Aggregate((a,b) => a + b);
+const string pattern = @"(\d)";
+const RegexOptions commonOptions = RegexOptions.Compiled | RegexOptions.ExplicitCapture;
+
+var (first, last) = (
+    new Regex(pattern, commonOptions), 
+    new Regex(pattern, RegexOptions.RightToLeft | commonOptions));
+
+var values = 
+    from line in File.ReadAllLines(@"../input.txt")
+    let digits = first.Match(line).Value + last.Match(line).Value
+    select int.Parse(digits);
+
+var sum = values.Aggregate((a, b) => a + b);      
 
 Console.WriteLine(sum);
