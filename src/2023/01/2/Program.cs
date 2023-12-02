@@ -35,7 +35,6 @@ var values =
         select (char)('0' + Array.IndexOf(map, phrase) % 10)
     select int.Parse(new string(digits.ToArray()));
 
-var sum = values.Aggregate((a, b) => a + b);
-
+var sum = values.Sum();
 Debug.Assert(54078 == sum);
 Console.WriteLine(sum);

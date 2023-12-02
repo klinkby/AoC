@@ -19,7 +19,6 @@ var values =
         select regex.Match(line).Value
     select int.Parse(string.Concat(digits));
 
-var sum = values.Aggregate((a, b) => a + b);
-
+var sum = values.Sum();
 Debug.Assert(54601 == sum);
 Console.WriteLine(sum);
