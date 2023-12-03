@@ -1,0 +1,15 @@
+﻿
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Klinkby.Aoc23032</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\1\Token.cs">
+      <Link>Token.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+</Project>
