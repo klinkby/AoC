@@ -8,7 +8,7 @@ var regex = new Regex(@"(?::)(?:\s+(?'win'\d+))+(?:\s\|)(?:\s+(?'you'\d+))+$",
     RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
 var points =
-    from line in File.ReadAllLines(@"..\..\..\..\input.txt")
+    from line in File.ReadAllLines(@"../input.txt")
     from m in regex.Matches(line)
     let win = m.Groups["win"].Captures.Select(c => int.Parse(c.Value))
     let you = m.Groups["you"].Captures.Select(c => int.Parse(c.Value))
