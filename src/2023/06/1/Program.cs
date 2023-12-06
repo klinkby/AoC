@@ -6,8 +6,7 @@
 
 using Klinkby.Toolkitt;
 
-var regex = new Regex(@"(\d+)",
-    RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+var regex = new Regex(@"(\d+)", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 (
     from line in File.ReadAllLines(@"../input.txt")
     select regex
