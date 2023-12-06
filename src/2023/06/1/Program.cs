@@ -10,11 +10,9 @@ var (time, distance) = (ParseLine(reader), ParseLine(reader));
 
 var margin = from i in Enumerable.Range(0, time.Count)
     let x = Math.Sqrt(Math.Pow(time[i], 2) - 4 * distance[i])
-    let tHold = (
-        (int)Math.Ceiling((time[i] - x) / 2),
-        (int)Math.Floor((time[i] + x) / 2)
-    )
-    select tHold.Item2 - tHold.Item1 + 1;
+    let tHold1 = (int)Math.Ceiling((time[i] - x) / 2)
+    let tHold2 = (int)Math.Floor((time[i] + x) / 2)
+    select tHold2 - tHold1 + 1;
 
 var power = margin.Aggregate(1, (a, b) => a * b);
 Debug.Assert(114400 == power);
