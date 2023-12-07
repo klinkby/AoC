@@ -6,7 +6,7 @@ var regex = new Regex(@"(?'hand'[\w\d]+)\s+(?'bid'\d+)", RegexOptions.Compiled |
 
 var i = 1;
 var winnings = (
-    from line in File.ReadAllLines(@"..\..\..\..\input.txt")
+    from line in File.ReadAllLines(@"../input.txt")
     let match = regex.Match(line)
     let hand = Hand.From(match.Groups["hand"].Value)
     let bid = int.Parse(match.Groups["bid"].Value)
