@@ -22,7 +22,7 @@ var directionMap = (
 
 var next = "AAA";
 var count = 0;
-foreach (var ch in RingIterator(instructions))
+foreach (var ch in Loop(instructions))
 {
     var direction = directionMap[next];
     next = ch switch
@@ -38,7 +38,7 @@ foreach (var ch in RingIterator(instructions))
 Debug.Assert(19783 == count);
 Console.WriteLine(count);
 
-static IEnumerable<T> RingIterator<T>(IReadOnlyCollection<T> collection)
+static IEnumerable<T> Loop<T>(IReadOnlyCollection<T> collection)
 {
     while (true)
         foreach (var item in collection)
