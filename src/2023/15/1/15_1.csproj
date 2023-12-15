@@ -4,9 +4,5 @@
         <OutputType>Exe</OutputType>
         <RootNamespace>Klinkby.Aoc23151</RootNamespace>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Klinkby.Toolkitt" Version="1.6.0" />
-    </ItemGroup>
-
+    
 </Project>

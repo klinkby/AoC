@@ -5,7 +5,7 @@ var reg = new Regex("(?'seq'[^,]+)(?:,|$)", RegexOptions.Compiled | RegexOptions
 var input = File.ReadLines("../input.txt").First();
 var sum = (
     from m in reg.Matches(input)
-    select m.Groups["seq"].Value.Aggregate(0L, (a, b) => (a + b) * 17 % 256)
+    select m.Groups["seq"].Value.Aggregate(0, (a, b) => (a + b) * 17 % 256)
 ).Sum();
 
 Debug.Assert(510792 == sum);
