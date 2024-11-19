@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <AssemblyName>aoc2024</AssemblyName>
+        <RootNamespace>aoc2024</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup Label="Puzzle input resources">

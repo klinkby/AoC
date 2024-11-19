@@ -6,11 +6,6 @@
 public interface IPuzzleSolver
 {
     /// <summary>
-    ///     Gets the name of the puzzle.
-    /// </summary>
-    string Name { get; }
-
-    /// <summary>
     ///     Solves the puzzle.
     /// </summary>
     /// <param name="input">Daily input as lines of text.</param>

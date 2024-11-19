@@ -15,16 +15,14 @@ try
     const double completion = 100d;
     string solution = "(not yet)";
     long allocatedMem = 0;
-    Stopwatch sw = Stopwatch.StartNew();
+    var sw = Stopwatch.StartNew();
 
     // what are we going to solve today? 
     PuzzleId id = Parser.ParseArguments(args);
-    TypeLocator locator = new(id);
-    string starsPerPuzzle = new('*', id.Puzzle);
     AnsiConsole.MarkupLineInterpolated(
         CultureInfo.CurrentCulture,
-        $"[bold green]AoC[/] [green]{id.Year}[/] [darkgreen]day[/] [green]{id.Day}[/] [darkgreen]puzzle[/] [bold yellow]{starsPerPuzzle}[/] [link]https://adventofcode.com/{id.Year}/day/{id.Day}[/] ");
-    string name = "(n/a)";
+        $"[bold green]AoC[/] [green]{id.Year}[/] [darkgreen]day[/] [green]{id.Day}[/] [darkgreen]puzzle[/] [bold yellow]{new string('*', id.Puzzle)}[/]");
+
     await AnsiConsole.Progress()
         .Columns(
             new TaskDescriptionColumn(), new ProgressBarColumn(), new PercentageColumn(),
@@ -38,11 +36,10 @@ try
                 ctx.AddTask("Solving puzzle")
             ];
 
-            IPuzzleSolver solver = Reflector.CreateInstance<IPuzzleSolver>(locator.PuzzleTypeName);
-            name = solver.Name;
+            IPuzzleSolver solver = Reflector.CreatePuzzleSolver(id);
             tasks[0].Value = completion;
 
-            IList<string> input = await Reflector.ReadResourceTextLinesAsync(locator.AssemblyName, locator.InputResourceName, cancellationToken);
+            IList<string> input = await Reflector.GetInputAsync(id, cancellationToken);
             tasks[1].Value = completion;
 
             long beforeMem = GC.GetTotalAllocatedBytes();
@@ -53,8 +50,9 @@ try
 
     // struck gold!
     AnsiConsole.MarkupLineInterpolated(CultureInfo.CurrentCulture,
-        $"[darkgreen]Solution for [green]{name}[/][bold yellow]{starsPerPuzzle}[/] was found in [green]{sw.Elapsed:g}[/] with [green]{allocatedMem >> 10:N0}[/] kB allocated:[/]");
-    AnsiConsole.WriteLine(solution);
+        $"[darkgreen]Solution found in [green]{sw.Elapsed:g}[/] with [green]{allocatedMem >> 10:N0}[/] kB allocated:[/]");
+    AnsiConsole.MarkupLineInterpolated(CultureInfo.CurrentCulture, $"[white]{solution}[/]");
+    AnsiConsole.WriteLine();
 }
 catch (OperationCanceledException)
 {

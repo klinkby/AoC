@@ -10,8 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Solve.AoC2023\Solve.AoC2023.csproj" />
-        <ProjectReference Include="..\Solve.AoC2024\Solve.AoC2024.csproj" />
+        <ProjectReference Include="..\2024\2024.csproj"/>
         <ProjectReference Include="..\Solve.Abstractions\Solve.Abstractions.csproj"/>
     </ItemGroup>
 

@@ -1,1 +1,0 @@
-﻿Daily input .txt files goes here.
