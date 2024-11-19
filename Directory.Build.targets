@@ -1,4 +1,0 @@
-﻿<Project>
-    <!-- Boost DevDrive -->
-    <Sdk Name="Microsoft.Build.CopyOnWrite" Version="1.0.334"/>
-</Project>
