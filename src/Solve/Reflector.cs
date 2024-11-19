@@ -1,49 +1,36 @@
-﻿global using System.Reflection;
+﻿using System.Reflection;
 
 namespace Solve;
 
 internal static class Reflector
 {
-    public static IPuzzleSolver CreatePuzzleSolver(PuzzleId id)
+    public static T CreateInstance<T>(string typeName) where T : class
     {
-        Type solverType = GetPuzzleSolverType(id);
-        return Activator.CreateInstance(solverType) as IPuzzleSolver ??
+        Type solverType = Type.GetType(typeName) ??
+                          throw new InvalidOperationException($"{typeName} not found");
+        return Activator.CreateInstance(solverType) as T ??
                throw new InvalidOperationException($"{solverType} not instantiable");
     }
 
-    public static async Task<IList<string>> GetInputAsync(PuzzleId id, CancellationToken cancellationToken)
+    public static async Task<IList<string>> ReadResourceTextLinesAsync(string assemblyName, string name, CancellationToken cancellationToken)
     {
-        string assemblyName = GetAssemblyName(id.Year);
-        string resourceName = $"{id.Year}.input.{id.Day:00}.txt";
-        await using Stream inputStream = Assembly
-                                             .Load(assemblyName)
-                                             .GetManifestResourceStream(resourceName) ??
-                                         throw new InvalidOperationException(
-                                             $"{resourceName} resource not found in {assemblyName}");
-        using var sr = new StreamReader(inputStream);
+        Assembly assembly = Assembly.Load(assemblyName);
+        await using Stream inputStream =
+            assembly.GetManifestResourceStream(name) ??
+                 throw new InvalidOperationException(
+                     $"{name} resource not found in {assembly.FullName}");
+
+        using StreamReader sr = new(inputStream);
         List<string> lines = [];
         while (!sr.EndOfStream)
         {
             string? line = await sr.ReadLineAsync(cancellationToken);
-            if (line is not null) lines.Add(line);
+            if (line is not null)
+            {
+                lines.Add(line);
+            }
         }
 
         return lines;
-
-    }
-
-    private static string GetAssemblyName(int year) => $"aoc{year}";
-
-    private static string GetPuzzleTypeName(PuzzleId id)
-    {
-        string assemblyName = GetAssemblyName(id.Year);
-        return $"{assemblyName}.Day{id.Day:00}Puzzle{id.Puzzle}, {assemblyName}";
-    }
-
-    private static Type GetPuzzleSolverType(PuzzleId id)
-    {
-        string typeName = GetPuzzleTypeName(id);
-        return Type.GetType(typeName) ??
-               throw new InvalidOperationException($"Solver {typeName} not found");
     }
 }
