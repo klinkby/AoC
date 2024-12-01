@@ -29,6 +29,7 @@ public class Day01
             int value = _columns[0][i];
             score[i] = value * column1.Count(value);
         }
+
         int sum = score.Sum();
         await Assert.That(sum).IsEqualTo(23963899);
     }
