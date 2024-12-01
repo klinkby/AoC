@@ -1,6 +1,4 @@
-﻿using Klinkby.AoC2024.Extensions;
-
-namespace Klinkby.AoC2024;
+﻿namespace Klinkby.AoC2024;
 
 public class Day01
 {
