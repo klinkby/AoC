@@ -1,14 +1,14 @@
 ﻿using System.Text;
 
-namespace Klinkby.AoC2024;
+namespace Klinkby.AoC2024.Extensions;
 
 internal static class EmbeddedResourceExtensions
 {
-    public static IReadOnlyList<string> ReadAllLines(this EmbeddedResource embeddedResource)
+    public static ReadOnlySpan<string> ReadAllLines(this EmbeddedResource embeddedResource)
     {
         using Stream stream = embeddedResource.GetStream();
         using StreamReader sr = new(stream, Encoding.UTF8, leaveOpen: true);
-        List<string> lines = [];
+        List<string> lines = new(1000);
         while (!sr.EndOfStream)
         {
             string? line = sr.ReadLine();
@@ -20,6 +20,6 @@ internal static class EmbeddedResourceExtensions
             lines.Add(line);
         }
 
-        return lines.AsReadOnly();
+        return lines.ToArray();
     }
 }
