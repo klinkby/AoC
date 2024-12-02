@@ -1,25 +1,47 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Klinkby.AoC2024.Extensions;
 
-internal static class EmbeddedResourceExtensions
+internal static partial class EmbeddedResourceExtensions
 {
-    public static ReadOnlySpan<string> ReadAllLines(this EmbeddedResource embeddedResource)
+    public static IReadOnlyList<IReadOnlyList<int>> ReadAllIntegers(this EmbeddedResource embeddedResource)
+    {
+        List<IReadOnlyList<int>> rows = new(1000);
+        rows.AddRange(EnumerateLines(embeddedResource).Select(ParseCells));
+
+        return rows;
+    }
+
+    private static List<int> ParseCells(string line)
+    {
+        List<int> cells = new(10);
+        foreach (Range range in SpaceSplitter().EnumerateSplits(line))
+        {
+            int integer = int.Parse(line[range], CultureInfo.CurrentCulture);
+            cells.Add(integer);
+        }
+
+        return cells;
+    }
+
+    private static IEnumerable<string> EnumerateLines(this EmbeddedResource embeddedResource)
     {
         using Stream stream = embeddedResource.GetStream();
         using StreamReader sr = new(stream, Encoding.UTF8, leaveOpen: true);
-        List<string> lines = new(1000);
         while (!sr.EndOfStream)
         {
-            string? line = sr.ReadLine();
-            if (line is null)
+            string? str = sr.ReadLine();
+            if (str is null)
             {
                 continue;
             }
 
-            lines.Add(line);
+            yield return str;
         }
-
-        return lines.ToArray();
     }
+
+    [GeneratedRegex(@"\s+", RegexOptions.CultureInvariant)]
+    private static partial Regex SpaceSplitter();
 }
