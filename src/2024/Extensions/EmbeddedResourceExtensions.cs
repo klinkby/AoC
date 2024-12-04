@@ -11,6 +11,25 @@ internal static partial class EmbeddedResourceExtensions
         return sr.ReadToEnd();
     }
     
+    public static IReadOnlyList<IReadOnlyList<char>> ReadCharMatrix(this EmbeddedResource embeddedResource)
+    {
+        List<IReadOnlyList<char>> rows = new(140);
+        using Stream stream = embeddedResource.GetStream();
+        using StreamReader sr = new(stream, Encoding.UTF8, leaveOpen: true);
+        while (!sr.EndOfStream)
+        {
+            string? str = sr.ReadLine();
+            if (str is null)
+            {
+                continue;
+            }
+
+            rows.Add(str.ToCharArray());
+        }
+
+        return rows;
+    }
+    
     public static IReadOnlyList<IReadOnlyList<int>> ReadAllIntegers(this EmbeddedResource embeddedResource)
     {
         List<IReadOnlyList<int>> rows = new(1000);
