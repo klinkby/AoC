@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text;
 
 namespace Klinkby.AoC2024.Extensions;
 

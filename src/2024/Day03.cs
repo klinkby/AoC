@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
-
-namespace Klinkby.AoC2024;
+﻿namespace Klinkby.AoC2024;
 
 public partial class Day03
 {
