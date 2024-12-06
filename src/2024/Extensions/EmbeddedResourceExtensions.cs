@@ -2,70 +2,22 @@
 
 namespace Klinkby.AoC2024.Extensions;
 
-internal static partial class EmbeddedResourceExtensions
+internal static class EmbeddedResourceExtensions
 {
-    public static string ReadToEnd(this EmbeddedResource embeddedResource)
+    public static ReadOnlySpan<char> ReadToEnd(this EmbeddedResource embeddedResource)
     {
         using Stream stream = embeddedResource.GetStream();
         using StreamReader sr = new(stream, Encoding.UTF8, leaveOpen: true);
         return sr.ReadToEnd();
     }
-    
-    public static IReadOnlyList<IReadOnlyList<char>> ReadCharMatrix(this EmbeddedResource embeddedResource)
-    {
-        List<IReadOnlyList<char>> rows = new(140);
-        using Stream stream = embeddedResource.GetStream();
-        using StreamReader sr = new(stream, Encoding.UTF8, leaveOpen: true);
-        while (!sr.EndOfStream)
-        {
-            string? str = sr.ReadLine();
-            if (str is null)
-            {
-                continue;
-            }
 
-            rows.Add(str.ToCharArray());
-        }
-
-        return rows;
-    }
-    
-    public static IReadOnlyList<IReadOnlyList<int>> ReadAllIntegers(this EmbeddedResource embeddedResource)
-    {
-        List<IReadOnlyList<int>> rows = new(1000);
-        rows.AddRange(ReadLines(embeddedResource).Select(ParseCells));
-
-        return rows;
-    }
-
-    private static IEnumerable<string> ReadLines(this EmbeddedResource embeddedResource)
+    public static IEnumerable<string> ReadAllLines(this EmbeddedResource embeddedResource)
     {
         using Stream stream = embeddedResource.GetStream();
         using StreamReader sr = new(stream, Encoding.UTF8, leaveOpen: true);
-        while (!sr.EndOfStream)
+        while (sr.ReadLine() is { } text)
         {
-            string? str = sr.ReadLine();
-            if (str is null)
-            {
-                continue;
-            }
-
-            yield return str;
+            yield return text;
         }
     }
-
-    private static List<int> ParseCells(string line)
-    {
-        List<int> cells = new(10);
-        foreach (Range range in SpaceSplitter().EnumerateSplits(line))
-        {
-            int integer = int.Parse(line[range], CultureInfo.CurrentCulture);
-            cells.Add(integer);
-        }
-
-        return cells;
-    }
-    
-    [GeneratedRegex(@"\s+", RegexOptions.CultureInvariant | RegexOptions.NonBacktracking)]
-    private static partial Regex SpaceSplitter();
 }

@@ -1,13 +1,15 @@
 ﻿namespace Klinkby.AoC2024;
 
-public class Day02
+public partial class Day02
 {
-    private readonly IReadOnlyList<IReadOnlyList<int>> _input = EmbeddedResource.input_02_txt.ReadAllIntegers();
 
     [Test]
     public async Task Puzzle1()
     {
-        int sum = _input.Sum(static levels => IsSafe(levels) ? 1 : 0);
+        IEnumerable<IReadOnlyList<int>> input = EmbeddedResource.input_02_txt
+            .ReadAllLines()
+            .ParseInts(SpaceSplitter());
+        int sum = input.Sum(static levels => IsSafe(levels) ? 1 : 0);
 
         await Assert.That(sum).IsEqualTo(269);
     }
@@ -15,7 +17,10 @@ public class Day02
     [Test]
     public async Task Puzzle2()
     {
-        int sum = _input
+        IEnumerable<IReadOnlyList<int>> input = EmbeddedResource.input_02_txt
+            .ReadAllLines()
+            .ParseInts(SpaceSplitter());
+        int sum = input
             .Select(MissingOneElement)
             .Count(static levels => levels.Any(IsSafe));
 
@@ -49,4 +54,7 @@ public class Day02
 
         return true;
     }
+    
+    [GeneratedRegex(@"\s+", RegexOptions.CultureInvariant | RegexOptions.NonBacktracking)]
+    private static partial Regex SpaceSplitter();    
 }
