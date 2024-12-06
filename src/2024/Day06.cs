@@ -51,13 +51,8 @@ public class Day06
         HashSet<(Point, Size)> visited = [];
         try
         {
-            while (true)
+            while (visited.Add((pos, step)))
             {
-                if (!visited.Add((pos, step)))
-                {
-                    return true; // loop detected
-                }
-
                 if (markTrial)
                 {
                     map[pos.Y][pos.X] = 'X';
@@ -72,6 +67,8 @@ public class Day06
 
                 step = new Size(-step.Height, step.Width); // 90 degrees clockwise
             }
+
+            return true; // loop detected
         }
         catch (IndexOutOfRangeException)
         {
