@@ -10,7 +10,7 @@ public class Day06
         char[][] map = GetMap();
         AnimateGuard(FindStartPos(map), map, true);
 
-        int sum = map.SelectMany(c => c).Count(c => c == 'X');
+        int sum = map.SelectMany(static c => c).Count(static c => c == 'X');
         await Assert.That(sum).IsEqualTo(5153);
     }
 
@@ -24,7 +24,6 @@ public class Day06
             from x in Enumerable.Range(0, r.row.Length)
             where r.row[x] == '.'
             select new Point(x, r.y);
-
         int sum = obstacles.Sum(o =>
         {
             map[o.Y][o.X] = '#';
@@ -39,7 +38,7 @@ public class Day06
     private static Point FindStartPos(char[][] map)
     {
         return (
-            from r in map.Select((row, y) => (row, y))
+            from r in map.Select(static (row, y) => (row, y))
             let x = Array.IndexOf(r.row, '^')
             where x >= 0
             select new Point(x, r.y)).Single();
@@ -82,7 +81,7 @@ public class Day06
     {
         return EmbeddedResource.input_06_txt
             .ReadAllLines()
-            .Select(x => x.ToCharArray())
+            .Select(static x => x.ToCharArray())
             .ToArray();
     }
 }
