@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace Klinkby.AoC2024;
+﻿namespace Klinkby.AoC2024;
 
 public class Day06
 {
