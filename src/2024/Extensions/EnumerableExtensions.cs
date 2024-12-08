@@ -12,10 +12,20 @@ internal static class EnumerableExtensions
 
     public static IEnumerable<List<int>> ParseInts(this IEnumerable<string> input, Regex separator)
     {
-        List<int> values = new(20);
+        return input.Parse(separator, text => int.Parse(text, CultureInfo.InvariantCulture));
+    }
+
+    public static IEnumerable<List<long>> ParseLongs(this IEnumerable<string> input, Regex separator)
+    {
+        return input.Parse(separator, text => long.Parse(text, CultureInfo.InvariantCulture));
+    }
+
+    private static IEnumerable<List<T>> Parse<T>(this IEnumerable<string> input, Regex separator, Func<ReadOnlySpan<char>, T> parse)
+    {
+        List<T> values = new(20);
         foreach (ReadOnlySpan<char> line in input)
         {
-            if (!EnumerateSplits(values, separator, line))
+            if (!EnumerateSplits<T>(values, separator, line, parse))
             {
                 continue;
             }
@@ -25,8 +35,8 @@ internal static class EnumerableExtensions
         }
     }
 
-    private static bool EnumerateSplits(List<int> values, Regex separator, ReadOnlySpan<char> line)
-    {
+    private static bool EnumerateSplits<T>(List<T> values, Regex separator, ReadOnlySpan<char> line, Func<ReadOnlySpan<char>, T> parse)
+    { 
         foreach (Range match in separator.EnumerateSplits(line))
         {
             if (match.End.Value == 0)
@@ -34,7 +44,7 @@ internal static class EnumerableExtensions
                 return false;
             }
 
-            values.Add(int.Parse(line[match], CultureInfo.InvariantCulture));
+            values.Add(parse(line[match]));
         }
 
         return true;
