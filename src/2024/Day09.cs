@@ -17,11 +17,10 @@ public class Day09
 
     private static Span<ushort> GetBlocks()
     {
-        string DenseDisk = EmbeddedResource.input_09_txt
+        IEnumerable<char> DenseDisk = EmbeddedResource.input_09_txt
             .ReadAllLines()
             .First();
         Span<ushort> blocks = DenseDisk
-            .ToCharArray()
             .Select(static (ch, i) => Enumerable.Repeat((ushort)(i % 2 == 0 ? i / 2 : Free), ch - ZeroAscii))
             .SelectMany(static x => x)
             .ToArray();
