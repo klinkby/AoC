@@ -23,6 +23,10 @@
     <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
   <ItemGroup Label="Nuget references">
     <PackageReference Include="TUnit" Version="0.3.31" />
     <PackageReference Include="Chorn.EmbeddedResourceAccessGenerator" Version="1.1.5">
