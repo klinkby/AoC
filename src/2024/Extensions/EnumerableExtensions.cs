@@ -29,6 +29,16 @@ internal static partial class EnumerableExtensions
     {
         return input.Parse(separator, text => long.Parse(text, CultureInfo.InvariantCulture));
     }
+    
+    public static Point FindLocation<T>(this IEnumerable<T[]> map, T marker)
+    {
+        return (
+            from r in map.Select(static (row, y) => (row, y))
+            let x = Array.IndexOf(r.row, marker)
+            where x >= 0
+            select new Point(x, r.y)
+            ).Single();
+    }
 
     private static IEnumerable<List<T>> Parse<T>(this IEnumerable<string> input, Regex separator, Func<ReadOnlySpan<char>, T> parse)
     {
