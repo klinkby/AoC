@@ -6,7 +6,7 @@ public partial class Day02
     [Test]
     public async Task Puzzle1()
     {
-        IEnumerable<IReadOnlyList<int>> input = EmbeddedResource.input_02_txt
+        IEnumerable<IReadOnlyList<int>> input = EmbeddedResource.day02_txt
             .ReadAllLines()
             .ParseInts(SpaceSplitter());
         int sum = input.Sum(static levels => IsSafe(levels) ? 1 : 0);
@@ -17,7 +17,7 @@ public partial class Day02
     [Test]
     public async Task Puzzle2()
     {
-        IEnumerable<IReadOnlyList<int>> input = EmbeddedResource.input_02_txt
+        IEnumerable<IReadOnlyList<int>> input = EmbeddedResource.day02_txt
             .ReadAllLines()
             .ParseInts(SpaceSplitter());
         int sum = input

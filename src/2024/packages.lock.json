@@ -2,12 +2,6 @@
   "version": 1,
   "dependencies": {
     "net9.0": {
-      "Chorn.EmbeddedResourceAccessGenerator": {
-        "type": "Direct",
-        "requested": "[1.1.5, )",
-        "resolved": "1.1.5",
-        "contentHash": "VqRh0xJnRGfH9jjh2ryE8bdb1DWmbouG53bp8VJxjc7pKAhpJQhZtErf4NJPpsavkqNgNPH9cqnABa3rxAZDtg=="
-      },
       "MathNet.Numerics": {
         "type": "Direct",
         "requested": "[5.0.0, )",
@@ -71,6 +65,9 @@
           "Microsoft.Testing.Platform.MSBuild": "1.4.3",
           "TUnit.Core": "0.3.31"
         }
+      },
+      "klinkby.aoc2024.private": {
+        "type": "Project"
       }
     }
   }

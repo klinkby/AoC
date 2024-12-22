@@ -1,8 +1,8 @@
 namespace Klinkby.AoC2024;
 
-public partial class Day19
+public class Day19
 {
-    private readonly static string[] Input = EmbeddedResource.input_day19_txt.ReadAllLines().ToArray();
+    private readonly static string[] Input = EmbeddedResource.day19_txt.ReadAllLines().ToArray();
     private readonly static string[] Towels = GetSortedTowels();
     private readonly static string[] Patterns = GetPatterns();
 

@@ -9,7 +9,7 @@ public partial class Day13
     [Test]
     public async Task Puzzle1()
     {
-        var input = EmbeddedResource.input_day13_txt.ReadAllLines();
+        var input = EmbeddedResource.day13_txt.ReadAllLines();
         long total = GetPriceOfPushes(input);
         await Assert.That(total).IsEqualTo(25629);
     }
@@ -17,7 +17,7 @@ public partial class Day13
     [Test]
     public async Task Puzzle2()
     {
-        var input = EmbeddedResource.input_day13_txt.ReadAllLines();
+        var input = EmbeddedResource.day13_txt.ReadAllLines();
         long total = GetPriceOfPushes(input, basePrice: 10_000_000_000_000L);
         await Assert.That(total).IsEqualTo(107487112929999L);
     }

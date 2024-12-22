@@ -2,7 +2,7 @@
 
 public class Day10
 {
-    private static readonly char[][] tiles = EmbeddedResource.input_10_txt
+    private static readonly char[][] tiles = EmbeddedResource.day10_txt
         .ReadAllLines()
         .Select(static x => x.ToCharArray())
         .ToArray();

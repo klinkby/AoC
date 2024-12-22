@@ -17,7 +17,7 @@ public class Day09
 
     private static Span<ushort> GetBlocks()
     {
-        IEnumerable<char> DenseDisk = EmbeddedResource.input_09_txt
+        IEnumerable<char> DenseDisk = EmbeddedResource.day09_txt
             .ReadAllLines()
             .First();
         Span<ushort> blocks = DenseDisk

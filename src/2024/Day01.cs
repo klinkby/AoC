@@ -37,7 +37,7 @@ public partial class Day01
     
     private static int[][] ReadInputAsColumns()
     {
-        return EmbeddedResource.input_01_txt
+        return EmbeddedResource.day01_txt
             .ReadAllLines()
             .ParseInts(SpaceSplitter())
             .AsColumns(2);

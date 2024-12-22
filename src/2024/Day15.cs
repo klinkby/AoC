@@ -2,7 +2,7 @@
 
 public class Day15
 {
-    private readonly static string[] input = EmbeddedResource.input_day15_txt.ReadAllLines()
+    private readonly static string[] input = EmbeddedResource.day15_txt.ReadAllLines()
         .ToArray();
 
     private readonly static char[][] map = input

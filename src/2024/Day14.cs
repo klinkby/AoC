@@ -75,7 +75,7 @@ public class Day14
 
     private static Rectangle[] GetRobotVectors()
     {
-        return EmbeddedResource.input_day14_txt
+        return EmbeddedResource.day14_txt
             .ReadAllLines()
             .ParseInts()
             .Select(static v => new Rectangle(v[0], v[1], v[2], v[3]))

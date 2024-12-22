@@ -28,14 +28,14 @@ public partial class Day05
 
     private static IEnumerable<List<int>> GetUpdates()
     {
-        return EmbeddedResource.input_05_txt.ReadAllLines()
+        return EmbeddedResource.day05_txt.ReadAllLines()
             .SkipWhile(x => x.Contains('|', StringComparison.Ordinal))
             .ParseInts(Splitter());
     }
 
     private static Dictionary<int, List<int>> GetRules()
     {
-        IEnumerable<string> input = EmbeddedResource.input_05_txt.ReadAllLines();
+        IEnumerable<string> input = EmbeddedResource.day05_txt.ReadAllLines();
         Dictionary<int, List<int>> ruleMap = [];
         IEnumerable<List<int>> rules = input
             .TakeWhile(x => x.Contains('|', StringComparison.Ordinal))

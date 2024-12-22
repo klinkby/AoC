@@ -5,7 +5,7 @@ public partial class Day04
     [Test]
     public async Task Puzzle1()
     {
-        char[][] horizontal = EmbeddedResource.input_04_txt
+        char[][] horizontal = EmbeddedResource.day04_txt
             .ReadAllLines()
             .Select(x => x.ToCharArray())
             .ToArray();

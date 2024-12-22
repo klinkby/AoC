@@ -5,7 +5,7 @@ public class Day11
     [Test]
     public async Task Puzzle1()
     {
-        string stones = EmbeddedResource.input_day11_txt.ReadAllLines().First();
+        string stones = EmbeddedResource.day11_txt.ReadAllLines().First();
         for (int i = 0; i < 25; i++)
         {
             stones = stones

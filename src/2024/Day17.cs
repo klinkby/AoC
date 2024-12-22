@@ -2,7 +2,7 @@ namespace Klinkby.AoC2024;
 
 public class Day17
 {
-    private readonly static string[] Input = EmbeddedResource.input_day17_txt.ReadAllLines().ToArray();
+    private readonly static string[] Input = EmbeddedResource.day17_txt.ReadAllLines().ToArray();
 
     [Test]
     public async Task Puzzle1()

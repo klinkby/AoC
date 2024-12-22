@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Klinkby.AoC2024.Private", "private\2024\Klinkby.AoC2024.Private.csproj", "{CA51AC6F-2E23-4884-852B-74C869982769}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|Any CPU = Release|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1ADABFEA-DE3A-4EAC-BB84-AC1AF9DE38DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1ADABFEA-DE3A-4EAC-BB84-AC1AF9DE38DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1ADABFEA-DE3A-4EAC-BB84-AC1AF9DE38DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA51AC6F-2E23-4884-852B-74C869982769}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA51AC6F-2E23-4884-852B-74C869982769}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA51AC6F-2E23-4884-852B-74C869982769}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA51AC6F-2E23-4884-852B-74C869982769}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

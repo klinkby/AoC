@@ -77,7 +77,7 @@ public class Day06
 
     private static char[][] GetMap()
     {
-        return EmbeddedResource.input_06_txt
+        return EmbeddedResource.day06_txt
             .ReadAllLines()
             .Select(static x => x.ToCharArray())
             .ToArray();

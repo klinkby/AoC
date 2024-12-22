@@ -5,7 +5,7 @@ public partial class Day03
     [Test]
     public async Task Puzzle1()
     {
-        ReadOnlySpan<char> input = EmbeddedResource.input_03_txt.ReadToEnd();
+        ReadOnlySpan<char> input = EmbeddedResource.day03_txt.ReadToEnd();
         int sum = ParseEnabledMuls(input, forceEnable: true);
         await Assert.That(sum).IsEqualTo(171183089);
     }
@@ -13,7 +13,7 @@ public partial class Day03
     [Test]
     public async Task Puzzle2()
     {
-        ReadOnlySpan<char> input = EmbeddedResource.input_03_txt.ReadToEnd();
+        ReadOnlySpan<char> input = EmbeddedResource.day03_txt.ReadToEnd();
         int sum = ParseEnabledMuls(input);
         await Assert.That(sum).IsEqualTo(63866497);
     }

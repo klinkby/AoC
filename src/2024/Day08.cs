@@ -2,7 +2,7 @@
 
 public class Day08
 {
-    private static readonly char[][] _map = EmbeddedResource.input_08_txt.ReadAllLines()
+    private static readonly char[][] _map = EmbeddedResource.day08_txt.ReadAllLines()
         .Select(static x => x.ToCharArray())
         .ToArray();
     private static readonly Size _mapSize = new(_map[0].Length, _map.Length);

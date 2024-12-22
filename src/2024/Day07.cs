@@ -79,7 +79,7 @@ public partial class Day07
         CultureInfo.InvariantCulture);
 
     private static IEnumerable<List<long>> GetEquations() =>
-        EmbeddedResource.input_07_txt.ReadAllLines()
+        EmbeddedResource.day07_txt.ReadAllLines()
             .ParseLongs(Splitter());
 
     [GeneratedRegex(@":\s|\s",
