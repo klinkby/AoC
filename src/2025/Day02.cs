@@ -11,26 +11,24 @@ public sealed class Day02
     {
         long sum = 0;
         
-        EmbeddedResource
-            .day02_txt
-            .GetStream()
-            .Read(',', text =>
+        using Stream stream = EmbeddedResource.day02_txt.GetStream();
+        stream.Read(',', text =>
+        {
+            (long from, long to) = ParseRange(text);
+            Span<char> buffer = stackalloc char[20];
+            for (long value = from; value <= to; value++)
             {
-                (long from, long to) = ParseRange(text);
-                Span<char> buffer = stackalloc char[20];
-                for (long value = from; value <= to; value++)
-                {
-                    value.TryFormat(buffer, out int length, provider: CultureInfo.InvariantCulture);
+                value.TryFormat(buffer, out int length, provider: CultureInfo.InvariantCulture);
 
-                    int split = length >> 1;
-                    ReadOnlySpan<char> left = buffer[..split];
-                    ReadOnlySpan<char> right = buffer[split..length];
-                    if (0 == left.CompareTo(right, StringComparison.Ordinal))
-                    {
-                        sum += value;
-                    }
+                int split = length >> 1;
+                ReadOnlySpan<char> left = buffer[..split];
+                ReadOnlySpan<char> right = buffer[split..length];
+                if (0 == left.CompareTo(right, StringComparison.Ordinal))
+                {
+                    sum += value;
                 }
-            });
+            }
+        });
         
         Assert.Equal(expected, sum);
     }
@@ -41,49 +39,47 @@ public sealed class Day02
     {
         long sum = 0;
         
-        EmbeddedResource
-            .day02_txt
-            .GetStream()
-            .Read(',', text =>
+        using Stream stream = EmbeddedResource.day02_txt.GetStream();
+        stream.Read(',', text =>
+        {
+            (long from, long to) = ParseRange(text);
+            Span<char> buffer = stackalloc char[20];
+            for (long value = from; value <= to; value++)
             {
-                (long from, long to) = ParseRange(text);
-                Span<char> buffer = stackalloc char[20];
-                for (long value = from; value <= to; value++)
+                value.TryFormat(buffer, out int length, provider: CultureInfo.InvariantCulture);
+                
+                for (int split = length >> 1; split >= 1; split--)
                 {
-                    value.TryFormat(buffer, out int length, provider: CultureInfo.InvariantCulture);
-                    
-                    for (int split = length >> 1; split >= 1; split--)
+                    if (length % split != 0)
                     {
-                        if (length % split != 0)
+                        continue;
+                    }
+
+                    ReadOnlySpan<char> left = buffer[.. split];
+                    bool allMatches = true;
+                    
+                    for (int index = split; index < length; index += split)
+                    {
+                        ReadOnlySpan<char> other = buffer[index .. (index + split)];
+                        if (0 == left.CompareTo(other, StringComparison.Ordinal))
                         {
                             continue;
                         }
 
-                        ReadOnlySpan<char> left = buffer[.. split];
-                        bool allMatches = true;
-                        
-                        for (int index = split; index < length; index += split)
-                        {
-                            ReadOnlySpan<char> other = buffer[index .. (index + split)];
-                            if (0 == left.CompareTo(other, StringComparison.Ordinal))
-                            {
-                                continue;
-                            }
-
-                            allMatches = false;
-                            break;
-                        }
-
-                        if (!allMatches)
-                        {
-                            continue;
-                        }
-
-                        sum += value;
+                        allMatches = false;
                         break;
                     }
+
+                    if (!allMatches)
+                    {
+                        continue;
+                    }
+
+                    sum += value;
+                    break;
                 }
-            });
+            }
+        });
         
         Assert.Equal(expected, sum);
     }
