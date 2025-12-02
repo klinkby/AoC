@@ -12,16 +12,14 @@ public sealed class Day01
     public void Puzzle1(long expected)
     {
         const long CountPosition = 0;
-
-        long password = 0;
         long position = StartPosition;
-        
         using Stream stream = EmbeddedResource.day01_txt.GetStream();
-        stream.Read('\n', text =>
+        
+        long password = stream.ReadAggregate('\n', text =>
         {
             int value = ParseValue(text);
             position = (position + value) % DialSteps;
-            if (CountPosition == position) password++;
+            return CountPosition == position ? 1 : 0;
         });
         
         Assert.Equal(expected, password);
@@ -30,11 +28,10 @@ public sealed class Day01
     [Theory, InlineData(5933)]
     public void Puzzle2(long expected)
     {
-        long password = 0;
         long dialPosition = StartPosition;
-        
         using Stream stream = EmbeddedResource.day01_txt.GetStream();
-        stream.Read('\n', text =>
+
+        long password = stream.ReadAggregate('\n', text =>
         {
             int value = ParseValue(text);
             bool wasZero = dialPosition == 0;
@@ -42,15 +39,14 @@ public sealed class Day01
             long newPosition = dialPosition + value;
             long nextPosition = Math.DivRem(newPosition, DialSteps, out dialPosition /* = remainder */);
 
-            password += (wasZero, newPosition) switch
+            if (dialPosition < 0) dialPosition += DialSteps;
+            return (wasZero, newPosition) switch
             {
                 (true, _) => Math.Abs(newPosition) / DialSteps,
                 (_, 0) => 1,
                 (_, > 0) => nextPosition,
                 (_, < 0) => 1 + Math.Abs(newPosition) / DialSteps
             };
-
-            if (dialPosition < 0) dialPosition += DialSteps;
         });
         
         Assert.Equal(expected, password);
