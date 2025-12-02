@@ -28,5 +28,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\private\2025\Klinkby.AoC2025.Private.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="Xunit.TraitAttribute">
+      <_Parameter1>Anno</_Parameter1>
+      <_Parameter2>2025</_Parameter2>
+   </AssemblyAttribute>
+  </ItemGroup>
   
 </Project>

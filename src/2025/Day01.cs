@@ -17,9 +17,9 @@ public sealed class Day01
         long position = StartPosition;
         
         using Stream stream = EmbeddedResource.day01_txt.GetStream();
-        stream.ReadAllLines(line =>
+        stream.Read('\n', text =>
         {
-            int value = ParseValue(line);
+            int value = ParseValue(text);
             position = (position + value) % DialSteps;
             if (CountPosition == position) password++;
         });
@@ -34,14 +34,14 @@ public sealed class Day01
         long dialPosition = StartPosition;
         
         using Stream stream = EmbeddedResource.day01_txt.GetStream();
-        stream.ReadAllLines(line =>
+        stream.Read('\n', text =>
         {
-            int value = ParseValue(line);
+            int value = ParseValue(text);
             bool wasZero = dialPosition == 0;
-            
+
             long newPosition = dialPosition + value;
             long nextPosition = Math.DivRem(newPosition, DialSteps, out dialPosition /* = remainder */);
-            
+
             password += (wasZero, newPosition) switch
             {
                 (true, _) => Math.Abs(newPosition) / DialSteps,
@@ -49,7 +49,7 @@ public sealed class Day01
                 (_, > 0) => nextPosition,
                 (_, < 0) => 1 + Math.Abs(newPosition) / DialSteps
             };
-            
+
             if (dialPosition < 0) dialPosition += DialSteps;
         });
         
