@@ -10,14 +10,14 @@ internal static class StreamExtensions
 
     extension(Stream stream)
     {
-        public long ReadAggregate(char splitter, Func<ReadOnlySpan<char>, long> aggregateFunc, int bufferSize = 100)
+        public long ReadAggregate(char splitter, Func<ReadOnlySpan<char>, long> aggregateFunc, int bufferSize = 128)
         {
             long sum = 0L;
             stream.Read(splitter, text => sum += aggregateFunc(text), bufferSize);
             return sum;
         }
 
-        public void Read(char splitter, Action<ReadOnlySpan<char>> use, int bufferSize = 100)
+        public void Read(char splitter, Action<ReadOnlySpan<char>> use, int bufferSize = 128)
         {
             Span<char> buffer = stackalloc char[FileEncoding.GetMaxByteCount(bufferSize)];
             using StreamReader sr = new(stream, FileEncoding);
@@ -26,6 +26,7 @@ internal static class StreamExtensions
             while ((read = sr.Read()) != -1)
             {
                 char ch = (char)read;
+                if (ch == '\r') continue;
                 if (ch == splitter && i != 0)
                 {
                     use(buffer[.. i]);
