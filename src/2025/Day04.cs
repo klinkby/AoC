@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Klinkby.AoC2025;
+﻿namespace Klinkby.AoC2025;
 
 /// <summary>
 ///     Day 4: Printing Department
@@ -18,7 +16,6 @@ public sealed class Day04
     {
         using Stream stream = EmbeddedResource.day04_txt.GetStream();
         char[][] window = [[], [], []];
-        // streaming aggregate 
         long sum = stream.ReadAggregate('\n', row =>
         {
             char[] rowClone = row.ToArray();
@@ -26,8 +23,7 @@ public sealed class Day04
             return MarkAccessiblePaperRolls(window);
         });
         
-        // read appended window row
-        ShiftDown(window, []);
+        ShiftDown(window, []); // append window row
         sum += MarkAccessiblePaperRolls(window); 
 
         Assert.Equal(expected, sum);
@@ -42,16 +38,15 @@ public sealed class Day04
         stream.Read('\n', row => buffer.Add(row.ToArray()));
         buffer.Add([]); // for window row
         
-        long sum = RemoveAccessiblePaperRolls( CollectionsMarshal.AsSpan(buffer));
+        long sum = RemoveAccessiblePaperRolls(CollectionsMarshal.AsSpan(buffer));
 
         Assert.Equal(expected, sum);
     }
 
     private static long RemoveAccessiblePaperRolls(Span<char[]> rows)
     {
-        long count = 0;
-        
         // count + mark accessible rolls
+        long count = 0;
         char[][] window = [[], [], []];
         foreach (char[] row in rows)
         {
@@ -63,10 +58,7 @@ public sealed class Day04
         for (int y = rows.Length - 1; y >= 0; y--)
             rows[y].Replace(MarkSymbol, EmptySymbol);
 
-        return count
-               + (count != 0
-                    ? RemoveAccessiblePaperRolls(rows) // recurse
-                    : 0);
+        return count + (count == 0 ? 0 : RemoveAccessiblePaperRolls(rows)); // recurse
     }
 
     private static int MarkAccessiblePaperRolls(Span<char[]> buffer)
@@ -74,21 +66,7 @@ public sealed class Day04
         int count = 0;
         for (int x = buffer[1].Length - 1; x >= 0; x--)
         {
-            // investigate buffer[1][x]  
-            if (0 == HasRoll(buffer[1], x))
-            {
-                continue;
-            }
-
-            int adjacent
-                = HasRoll(buffer[0], x - 1) + HasRoll(buffer[0], x) + HasRoll(buffer[0], x + 1)
-                  + HasRoll(buffer[1], x - 1) + 0 + HasRoll(buffer[1], x + 1)
-                  + HasRoll(buffer[2], x - 1) + HasRoll(buffer[2], x) + HasRoll(buffer[2], x + 1);
-            bool accessible = adjacent <= MaxAdjacentRolls;
-            if (!accessible)
-            {
-                continue;
-            }
+            if (!IsAccessible(buffer, x)) continue;
 
             buffer[1][x] = MarkSymbol;
             count++;
@@ -97,12 +75,16 @@ public sealed class Day04
         return count;
     }
 
+    private static bool IsAccessible(Span<char[]> buffer, int x) =>
+        0 != HasRoll(buffer[1], x) && MaxAdjacentRolls >=
+            HasRoll(buffer[0], x - 1) + HasRoll(buffer[0], x) + HasRoll(buffer[0], x + 1)
+            + HasRoll(buffer[1], x - 1) + 0 + HasRoll(buffer[1], x + 1)
+            + HasRoll(buffer[2], x - 1) + HasRoll(buffer[2], x) + HasRoll(buffer[2], x + 1);
+
     private static int HasRoll(char[] row, int x) =>
         x < 0 || x >= row.Length
-            ? 0
-            : row[x] == RollSymbol || row[x] == MarkSymbol
-                ? 1
-                : 0;
+            ? 0 : row[x] == RollSymbol || row[x] == MarkSymbol
+                ? 1 : 0;
 
     private static void ShiftDown<T>(T[] buffer, T newRow)
     {
