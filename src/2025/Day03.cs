@@ -54,6 +54,7 @@ public sealed class Day03
 
         Span<char> remainingMax = max[1..]; // remaining buffer to fill
         ReadOnlySpan<char> remainingBank = bank[(index + 1) ..]; // remaning bank to search
-        MaximizeJoltage(ref remainingMax, ref remainingBank);
+        
+        MaximizeJoltage(ref remainingMax, ref remainingBank); // recurse
     }
 }
