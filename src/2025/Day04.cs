@@ -77,8 +77,8 @@ public sealed class Day04
 
     private static bool IsAccessible(Span<char[]> buffer, int x) =>
         0 != HasRoll(buffer[1], x) && MaxAdjacentRolls >=
-            HasRoll(buffer[0], x - 1) + HasRoll(buffer[0], x) + HasRoll(buffer[0], x + 1)
-            + HasRoll(buffer[1], x - 1) + 0 + HasRoll(buffer[1], x + 1)
+              HasRoll(buffer[0], x - 1) + HasRoll(buffer[0], x) + HasRoll(buffer[0], x + 1)
+            + HasRoll(buffer[1], x - 1) + 0_0                   + HasRoll(buffer[1], x + 1)
             + HasRoll(buffer[2], x - 1) + HasRoll(buffer[2], x) + HasRoll(buffer[2], x + 1);
 
     private static int HasRoll(char[] row, int x) =>
