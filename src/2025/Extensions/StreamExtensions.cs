@@ -6,18 +6,19 @@ namespace Klinkby.AoC2025.Extensions;
 [DebuggerStepThrough]
 internal static class StreamExtensions
 {
+    private const int DefaultBufferSize = 160;
     private readonly static Encoding FileEncoding = Encoding.Latin1;
 
     extension(Stream stream)
     {
-        public long ReadAggregate(char splitter, Func<ReadOnlySpan<char>, long> aggregateFunc, int bufferSize = 128)
+        public long ReadAggregate(char splitter, Func<ReadOnlySpan<char>, long> aggregateFunc, int bufferSize = DefaultBufferSize)
         {
             long sum = 0L;
             stream.Read(splitter, text => sum += aggregateFunc(text), bufferSize);
             return sum;
         }
 
-        public void Read(char splitter, Action<ReadOnlySpan<char>> use, int bufferSize = 128)
+        public void Read(char splitter, Action<ReadOnlySpan<char>> use, int bufferSize = DefaultBufferSize)
         {
             Span<char> buffer = stackalloc char[FileEncoding.GetMaxByteCount(bufferSize)];
             using StreamReader sr = new(stream, FileEncoding);
