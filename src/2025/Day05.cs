@@ -26,13 +26,11 @@ public sealed class Day05
     {
         using Stream stream = EmbeddedResource.day05_txt.GetStream();
         List<LongRange> ranges = new(200);
-        stream.Read('\n', text => 
-            MergeRange(text, ranges));
+        stream.Read('\n', text => MergeRange(text, ranges));
         
         long sum = ranges
             .AsValueEnumerable()
-            .Aggregate(0L, (agg, range) => 
-                agg + range.To - range.From + 1);
+            .Aggregate(0L, (agg, range) => agg + range.To - range.From + 1);
         
         Assert.Equal(expected, sum);
     }
@@ -41,14 +39,14 @@ public sealed class Day05
     {
         bool parsed = text.TryParseRange(out LongRange range);
         if (parsed) ranges.Add(range);
+        
         next = parsed ? AddRange : Search;
         return false;
     }
     
     private static bool Search(ReadOnlySpan<char> text, List<LongRange> ranges, out Strategy next)
     {
-        bool found = text.TryParseLong(out long value)
-            && ranges.Exists(r => r.Contains(value));
+        bool found = text.TryParseLong(out long value) && ranges.Exists(r => r.Contains(value));
         next = Search;
         return found;
     }
@@ -61,9 +59,7 @@ public sealed class Day05
         {
             if (!ranges[i].Overlaps(range)) continue;
 
-            range = new(
-                Math.Min(range.From, ranges[i].From), 
-                Math.Max(range.To, ranges[i].To));
+            range = new(Math.Min(range.From, ranges[i].From), Math.Max(range.To, ranges[i].To));
             ranges.RemoveAt(i);
         }
 
