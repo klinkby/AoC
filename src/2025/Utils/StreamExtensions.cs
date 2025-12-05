@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
-namespace Klinkby.AoC2025.Extensions;
+namespace Klinkby.AoC2025.Utils;
 
 [DebuggerStepThrough]
 internal static class StreamExtensions
@@ -28,7 +28,7 @@ internal static class StreamExtensions
             {
                 char ch = (char)read;
                 if (ch == '\r') continue;
-                if (ch == splitter && i != 0)
+                if (ch == splitter)
                 {
                     use(buffer[.. i]);
                     i = 0;

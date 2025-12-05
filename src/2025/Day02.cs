@@ -18,10 +18,9 @@ public sealed class Day02
     private static long GetRepeatedValues(ReadOnlySpan<char> text)
     {
         long rangeSum = 0L;
-        (long from, long to) = ParseRange(text);
         Span<char> buffer = stackalloc char[20];
-            
-        for (long value = from; value <= to; value++)
+        _ = text.TryParseRange(out var range);
+        for (long value = range.From; value <= range.To; value++)
         {
             value.TryFormat(buffer, out int length, provider: CultureInfo.InvariantCulture);
 
@@ -50,10 +49,9 @@ public sealed class Day02
     private static long GetMultiRepeatedValues(ReadOnlySpan<char> text)
     {
         long rangeSum = 0L;
-        (long from, long to) = ParseRange(text);
         Span<char> buffer = stackalloc char[20];
-            
-        for (long value = from; value <= to; value++)
+        _ = text.TryParseRange(out var range);
+        for (long value = range.From; value <= range.To; value++)
         {
             value.TryFormat(buffer, out int length, provider: CultureInfo.InvariantCulture);
                 
@@ -92,13 +90,5 @@ public sealed class Day02
         }
 
         return allMatches;
-    }
-
-    private static (long From, long To) ParseRange(ReadOnlySpan<char> text)
-    {
-        int split = text.IndexOf('-');
-        return (
-            long.Parse(text[.. split], CultureInfo.InvariantCulture),
-            long.Parse(text[(split + 1) ..], CultureInfo.InvariantCulture));
     }
 }
