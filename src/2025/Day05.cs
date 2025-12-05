@@ -19,6 +19,21 @@ public sealed class Day05
 
         Assert.Equal(expected, sum);
     }
+    
+    [Theory]
+    [InlineData(344323629240733)]
+    public void Puzzle2(long expected)
+    {
+        using Stream stream = EmbeddedResource.day05_txt.GetStream();
+        List<LongRange> ranges = new(200);
+        stream.Read('\n', text => 
+            MergeRange(text, ranges));
+        
+        long sum = ranges.Aggregate(0L, (agg, range) => 
+            agg + range.To - range.From + 1);
+        
+        Assert.Equal(expected, sum);
+    }
 
     private static bool AddRange(ReadOnlySpan<char> text, List<LongRange> ranges, out Strategy next)
     {
@@ -27,12 +42,29 @@ public sealed class Day05
         next = parsed ? AddRange : Search;
         return false;
     }
-
+    
     private static bool Search(ReadOnlySpan<char> text, List<LongRange> ranges, out Strategy next)
     {
         bool found = text.TryParseLong(out long value)
             && ranges.Exists(r => r.Contains(value));
         next = Search;
         return found;
+    }
+    
+    private static void MergeRange(ReadOnlySpan<char> text, List<LongRange> ranges)
+    {
+        if (!text.TryParseRange(out LongRange range)) return;
+
+        for (int i = ranges.Count - 1; i >= 0; i--)
+        {
+            if (!ranges[i].Overlaps(range)) continue;
+
+            range = new(
+                Math.Min(range.From, ranges[i].From), 
+                Math.Max(range.To, ranges[i].To));
+            ranges.RemoveAt(i);
+        }
+
+        ranges.Add(range);
     }
 }
