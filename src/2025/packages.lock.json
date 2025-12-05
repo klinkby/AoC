@@ -38,6 +38,12 @@
           "xunit.v3.runner.inproc.console": "[3.2.1]"
         }
       },
+      "ZLinq": {
+        "type": "Direct",
+        "requested": "[1.5.4, )",
+        "resolved": "1.5.4",
+        "contentHash": "Ogt0vjeHVPKJFOqcoEeHpBft4b1HD6CnOpeQSHWK2WPq0kMtietggm/2viwW44hdalf4F2mYeyWomDXMw9rv1g=="
+      },
       "Microsoft.ApplicationInsights": {
         "type": "Transitive",
         "resolved": "2.23.0",

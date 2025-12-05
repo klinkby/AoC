@@ -29,8 +29,10 @@ public sealed class Day05
         stream.Read('\n', text => 
             MergeRange(text, ranges));
         
-        long sum = ranges.Aggregate(0L, (agg, range) => 
-            agg + range.To - range.From + 1);
+        long sum = ranges
+            .AsValueEnumerable()
+            .Aggregate(0L, (agg, range) => 
+                agg + range.To - range.From + 1);
         
         Assert.Equal(expected, sum);
     }

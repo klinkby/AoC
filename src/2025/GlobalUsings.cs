@@ -8,3 +8,4 @@ global using Klinkby.AoC2025.Utils;
 global using Klinkby.AoC2025.Models;
 global using Xunit;
 global using static Xunit.TestContext;
+global using ZLinq;
