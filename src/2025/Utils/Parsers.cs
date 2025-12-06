@@ -5,8 +5,14 @@ namespace Klinkby.AoC2025.Utils;
 [DebuggerStepThrough]
 internal static class Parsers
 { 
-    public static bool TryParseLong(this ReadOnlySpan<char> text, out  long value) => 
+    public static bool TryParseLong(this ReadOnlySpan<char> text, out long value) => 
         long.TryParse(text, CultureInfo.InvariantCulture, out value);
+
+    public static bool TryParseInt(this ReadOnlySpan<char> text, out int value) => 
+        int.TryParse(text, CultureInfo.InvariantCulture, out value);
+
+    public static bool TryParseShort(this ReadOnlySpan<char> text, out short value) => 
+        short.TryParse(text, CultureInfo.InvariantCulture, out value);
 
     public static bool TryParseRange(
         this ReadOnlySpan<char> text,

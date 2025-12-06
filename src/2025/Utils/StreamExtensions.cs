@@ -7,7 +7,7 @@ namespace Klinkby.AoC2025.Utils;
 internal static class StreamExtensions
 {
     private const int DefaultBufferSize = 160;
-    private readonly static Encoding FileEncoding = Encoding.Latin1;
+    private static readonly Encoding FileEncoding = Encoding.Latin1;
 
     extension(Stream stream)
     {
