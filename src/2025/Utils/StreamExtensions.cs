@@ -18,7 +18,17 @@ internal static class StreamExtensions
             return sum;
         }
 
-        public void Read(char splitter, Action<ReadOnlySpan<char>> use, int bufferSize = DefaultBufferSize)
+        public long ReadAggregate<T>(char splitter, T state, Func<ReadOnlySpan<char>, T, long> aggregateFunc, int bufferSize = DefaultBufferSize) where T: allows ref struct
+        {
+            long sum = 0L;
+            stream.Read(splitter, state, (text, innerState) => sum += aggregateFunc(text, innerState), bufferSize);
+            return sum;
+        }
+        
+        public void Read(char splitter, Action<ReadOnlySpan<char>> use, int bufferSize = DefaultBufferSize) => 
+            stream.Read<object?>(splitter, null, (text, _) => use(text), bufferSize);
+        
+        public void Read<T>(char splitter, T state, Action<ReadOnlySpan<char>, T> use, int bufferSize = DefaultBufferSize) where T: allows ref struct
         {
             Span<char> buffer = stackalloc char[FileEncoding.GetMaxByteCount(bufferSize)];
             using StreamReader sr = new(stream, FileEncoding);
@@ -30,7 +40,7 @@ internal static class StreamExtensions
                 if (ch == '\r') continue;
                 if (ch == splitter)
                 {
-                    use(buffer[.. i]);
+                    use(buffer[.. i], state);
                     i = 0;
                     continue;
                 }
@@ -41,7 +51,7 @@ internal static class StreamExtensions
 
             if (i != 0)
             {
-                use(buffer[.. i]);
+                use(buffer[.. i], state);
             }
         }
     }
