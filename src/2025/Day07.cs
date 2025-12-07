@@ -12,8 +12,8 @@ public sealed partial class Day07
     public void Puzzle1(long expected)
     {
         using Stream stream = EmbeddedResource.day07_txt.GetStream();
-        long sum = stream.ReadAggregate('\n', stackalloc long[150], (text, beams) => 
-            ProcessBeams(text, beams));
+        long sum = stream.ReadAggregate('\n', stackalloc long[150], (row, beams) => 
+            CountBeamSplits(row, beams));
         
         Assert.Equal(expected, sum);
     }
@@ -24,19 +24,19 @@ public sealed partial class Day07
     {
         using Stream stream = EmbeddedResource.day07_txt.GetStream();
         Span<long> beams = stackalloc long[150];
-        stream.Read('\n', beams, (text, b) => ProcessBeams(text, b));
+        stream.Read('\n', beams, (row, b) => CountBeamSplits(row, b));
         long sum = beams.AsValueEnumerable().Sum();
         
         Assert.Equal(expected, sum);
     }
 
-    private static int ProcessBeams(ReadOnlySpan<char> text, Span<long> beams)
+    private static int CountBeamSplits(ReadOnlySpan<char> row, Span<long> beams)
     {
-        var index = text.IndexOf(StartSymbol);
+        var index = row.IndexOf(StartSymbol);
         if (index != -1) beams[index] = 1;
 
         var count = 0;
-        foreach (var match in Splitters().EnumerateMatches(text))
+        foreach (var match in Splitters().EnumerateMatches(row))
         {
             if (0 != beams[match.Index]) count++;
             
