@@ -31,4 +31,22 @@ internal static class Parsers
         range = default;
         return false;
     }
+    
+    public static bool TryParseTuple(
+        this ReadOnlySpan<char> text,
+        out ValueTuple<int, int> value,
+        char separator = ',')
+    {
+        int split = text.IndexOf(separator);
+        if (split >= 0
+            && TryParseInt(text[.. split], out var item1)
+            && TryParseInt(text[(split + 1) ..], out var item2))
+        {
+            value = new(item1, item2);
+            return true;
+        }
+
+        value = default;
+        return false;
+    }
 }
