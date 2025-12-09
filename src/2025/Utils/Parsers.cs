@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.Intrinsics;
 
 namespace Klinkby.AoC2025.Utils;
 
@@ -32,21 +33,23 @@ internal static class Parsers
         return false;
     }
     
-    public static bool TryParseTuple(
+    public static bool TryParseVector(
         this ReadOnlySpan<char> text,
-        out ValueTuple<int, int> value,
+        out Vector64<int> vector,
         char separator = ',')
     {
         int split = text.IndexOf(separator);
+        
+        Span<int> values = stackalloc int[2];
         if (split >= 0
-            && TryParseInt(text[.. split], out var item1)
-            && TryParseInt(text[(split + 1) ..], out var item2))
+            && TryParseInt(text[.. split], out values[0])
+            && TryParseInt(text[(split + 1) ..], out values[1]))
         {
-            value = new(item1, item2);
+            vector = Vector64.Create(values);
             return true;
         }
 
-        value = default;
+        vector = default;
         return false;
     }
 }
