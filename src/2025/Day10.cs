@@ -5,43 +5,56 @@
 /// </summary>
 public sealed partial class Day10
 {
+    private const int Capacity = 25;
+    
     [Theory]
     [InlineData(417)]
     public void Puzzle1(long expected)
     {
         using Stream stream = EmbeddedResource.day10_txt.GetStream();
-        Span<uint> setBuffer = stackalloc uint[20];
+        Span<uint> setBuffer = stackalloc uint[Capacity];
+        Queue<(uint state, int presses)> queue = new(Capacity);
+        HashSet<uint> visited = new (Capacity);
         long sum = stream.ReadAggregate('\n', setBuffer, (text, sets) =>
         {
+            Reset();
             Parse(text, out uint desired, sets, out int setCount);
-            long leastApplications = long.MaxValue;
+            return FindMinimumIterations(sets[ .. setCount], desired);
+        });
 
-            // Breadth-first search (BFS) to find minimum presses
-            var queue = new Queue<(uint state, int presses)>([(0, 0)]);
-            var visited = new HashSet<uint> { 0 };
+        Assert.Equal(expected, sum);
+        return;
+
+        long FindMinimumIterations(ReadOnlySpan<uint> sets, uint desired)
+        {
+            var minIterations = long.MaxValue;
+            queue.Enqueue((0, 0));
+            visited.Add(0);
+
             while (queue.Count > 0)
             {
-                var (currentState, presses) = queue.Dequeue();
+                var (currentState, iterations) = queue.Dequeue();
                 if (currentState == desired)
                 {
-                    leastApplications = presses;
+                    minIterations = iterations;
                     break;
                 }
 
-                for (int i = 0; i < setCount; i++)
+                for (var i = sets.Length - 1; i >= 0; i--)
                 {
-                    uint nextState = currentState ^ sets[i];
-                    if (visited.Add(nextState))
-                    {
-                        queue.Enqueue((nextState, presses + 1));
-                    }
+                    var nextState = currentState ^ sets[i];
+                    if (visited.Add(nextState)) queue.Enqueue((nextState, iterations + 1));
                 }
             }
 
-            return leastApplications;
-        }, 250);
+            return minIterations;
+        }
 
-        Assert.Equal(expected, sum);
+        void Reset()
+        {
+            queue.Clear();
+            visited.Clear();
+        }
     }
 
     private static void Parse(ReadOnlySpan<char> text, out uint desired, Span<uint> buttonSets, out int buttonSetCount)
@@ -71,7 +84,7 @@ public sealed partial class Day10
         }
     }
 
-    [GeneratedRegex(@"\(([^\)]+)", RegexOptions.CultureInvariant | RegexOptions.NonBacktracking)]
+    [GeneratedRegex(@"\(([^\)]+)", RegexOptions.CultureInvariant | RegexOptions.NonBacktracking | RegexOptions.ExplicitCapture)]
     private static partial Regex GroupParser();
 
     [GeneratedRegex(@"(\d+)", RegexOptions.CultureInvariant | RegexOptions.NonBacktracking | RegexOptions.ExplicitCapture)]
