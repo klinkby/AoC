@@ -31,7 +31,7 @@ internal readonly ref struct DisjointSetUnion
         return x;
     }
 
-    public bool Union(int a, int b)
+    public bool Union(int a, int b, int? limit = null)
     {
         a = Find(a);
         b = Find(b);
@@ -40,7 +40,9 @@ internal readonly ref struct DisjointSetUnion
         if (_count[a] < _count[b]) (a, b) = (b, a);
         _parent[b] = a;
         _count[a] += _count[b];
+        if (!limit.HasValue || _count[a] < limit.Value) return false;
         return true;
+
     }
 
     public int Count(int x) => _count[Find(x)];

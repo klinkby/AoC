@@ -8,10 +8,10 @@ public sealed class Day08
     private static readonly Comparer<long> Comparer = Comparer<long>.Create((x, y) => x.CompareTo(y));
     
     [Theory]
-    [InlineData(50568, 1000, 3)]
-    public void Puzzle1(int expected, int limitDistances, int limitCircuits)
+    [InlineData(50568, 1000, 1000, 3)]
+    public void Puzzle1(int expected, int limitDistances, int connections, int limitCircuits)
     {
-        Span<(int X, int Y, int Z)> coords = stackalloc (int X, int Y, int Z)[1000];
+        Span<(int X, int Y, int Z)> coords = stackalloc (int X, int Y, int Z)[connections];
         var positionCount = 0;
         using var stream = EmbeddedResource.day08_txt.GetStream();
         stream.Read('\n', coords, (text, c) =>
@@ -22,12 +22,33 @@ public sealed class Day08
         coords = coords[..positionCount];
         
         var distances = CalculateDistances(coords, limitDistances);
-        var sizes = MeasureSizes(distances, limitDistances);
+        var sizes = MeasureSizes(distances, limitDistances, out _);
         var mul = sizes
             .AsValueEnumerable()
             .OrderDescending()
             .Take(limitCircuits)
             .Aggregate(1L, (agg, count) => agg * count);
+
+        Assert.Equal(expected, mul);
+    }
+    
+    [Theory]
+    [InlineData(36045012, 10000, 1000)]
+    public void Puzzle2(int expected, int limitDistances, int connections)
+    {
+        Span<(int X, int Y, int Z)> coords = stackalloc (int X, int Y, int Z)[connections];
+        var positionCount = 0;
+        using var stream = EmbeddedResource.day08_txt.GetStream();
+        stream.Read('\n', coords, (text, c) =>
+        {
+            ParseCoords(text, c, positionCount);
+            positionCount++;
+        });
+        coords = coords[..positionCount];
+        
+        var distances = CalculateDistances(coords, limitDistances);
+        _ = MeasureSizes(distances, limitDistances, out var lastJoin, connections);
+        var mul = coords[lastJoin.A].X * coords[lastJoin.B].X;
 
         Assert.Equal(expected, mul);
     }
@@ -45,11 +66,18 @@ public sealed class Day08
         return distances;
     }
 
-    private static List<int> MeasureSizes(SortedList<long, (int A, int B)> distances, int limitDistances)
+    private static List<int> MeasureSizes(SortedList<long, (int A, int B)> distances, int limitDistances, out (int A, int B) lastJoin, int? connected = null)
     {
         var dsu = new DisjointSetUnion(stackalloc int[limitDistances], stackalloc int[limitDistances]);
         foreach (var distance in distances)
-            dsu.Union(distance.Value.A, distance.Value.B);
+        {
+            if (dsu.Union(distance.Value.A, distance.Value.B, connected))
+            {
+                Current.TestOutputHelper.WriteLine($"{distance.Key} {distance.Value.A} {distance.Value.B} {distance.Value}");
+                lastJoin = (distance.Value.A, distance.Value.B);
+                return [];
+            }
+        }
 
         List<int> sizes = new(limitDistances / 3);
         HashSet<int> seen = new(sizes.Capacity);
@@ -59,6 +87,7 @@ public sealed class Day08
             if (seen.Add(root)) sizes.Add(dsu.Count(root));
         }
 
+        lastJoin = default;
         return sizes;
     }
 
